@@ -2,42 +2,44 @@ package com.bridgelabz.addressbook.services;
 
 import com.bridgelabz.addressbook.dto.AddressBookDTO;
 import com.bridgelabz.addressbook.model.AddressBookData;
+import com.bridgelabz.addressbook.repository.AddressBookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class AddressBookServices implements IAddressBookServices {
 
-    List<AddressBookData> addressbookDataList = new ArrayList();
+    @Autowired
+    AddressBookRepository addressBookRepo;
 
     @Override
     public List<AddressBookData> getAddressBookData() {
-        return addressbookDataList;
+        return addressBookRepo.findAll();
     }
 
     @Override
     public AddressBookData getAddressBookDataById(int personId) {
-        return addressbookDataList.get(personId-1);
+        return addressBookRepo.findById(personId).orElse(null);
     }
 
     @Override
     public AddressBookData createAddressBookData(AddressBookDTO addressBookDTO) {
-        AddressBookData addressBookData = new AddressBookData(addressbookDataList.size()+1, addressBookDTO);
-        addressbookDataList.add(addressBookData);
-        return addressBookData;
+        AddressBookData addressBookData = new AddressBookData(addressBookDTO);
+        return addressBookRepo.save(addressBookData);
     }
 
     @Override
-    public AddressBookData updateAddressBookData(int personId, AddressBookDTO addressBookDTO) {
-        AddressBookData addressBookData = this.getAddressBookDataById(personId-1);
-        addressBookData.updateAddressBookData(addressBookDTO);
-        return addressBookData;
+    public AddressBookData updateAddressBookData(int personId, AddressBookDTO AddressBookDTO) {
+        AddressBookData addressBookData = this.getAddressBookDataById(personId);
+        addressBookData.updateAddressBookData(AddressBookDTO);
+        return addressBookRepo.save(addressBookData);
     }
 
     @Override
     public void deleteAddressBookData(int personId) {
-        addressbookDataList.remove(personId-1);
+        AddressBookData addressBookData = this.getAddressBookDataById(personId);
+        addressBookRepo.delete(addressBookData);
     }
 }
