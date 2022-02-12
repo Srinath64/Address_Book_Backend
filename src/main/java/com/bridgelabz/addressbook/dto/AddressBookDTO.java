@@ -13,7 +13,7 @@ public @Data class AddressBookDTO {
     @Pattern(regexp = "^[A-Z]{1}[a-zA-Z\\s]{2,}$", message = "Person's last_name Invalid")
     public String last_name;
 
-    @Pattern(regexp = "Male|Female", message = "Gender needs to be male or female")
+    @Pattern(regexp = "Male|Female", message = "Gender needs to be Male or Female")
     public String gender;
 
     @Pattern(regexp = "^[6-9]\\d{9}$", message = "Phone number should be of 10 digit")
