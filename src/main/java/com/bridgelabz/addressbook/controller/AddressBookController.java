@@ -3,6 +3,7 @@ package com.bridgelabz.addressbook.controller;
 import com.bridgelabz.addressbook.dto.AddressBookDTO;
 import com.bridgelabz.addressbook.dto.ResponseDTO;
 import com.bridgelabz.addressbook.model.AddressBookData;
+import com.bridgelabz.addressbook.model.User;
 import com.bridgelabz.addressbook.services.IAddressBookServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,14 +12,29 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/addressbook")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin
 public class AddressBookController {
 
     @Autowired
     IAddressBookServices addressBookServices;
+
+
+    @GetMapping("/api")
+    public String login(){
+        return "Authenticated Successfully !!!" ;
+    }
+
+    @GetMapping("/getUsers")
+    public List<User> getUsers(){
+        return Stream.of(new User(108,"Santosh","santosh@gmail.com","9087654321"),
+                        new User(101,"Basant","basant@gmail.com","8867101121")).
+                collect(Collectors.toList());
+    }
 
     //http://localhost:8085/addressbook/details
     @GetMapping(value = {"", "/", "/details"})
